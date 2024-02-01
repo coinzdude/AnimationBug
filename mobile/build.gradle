@@ -1,0 +1,87 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk rootProject.compileSdk
+//    compileSdkPreview "UpsideDownCake"
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion rootProject.composeVersion
+    }
+
+    defaultConfig {
+        applicationId "com.lusion.animationbug"
+        minSdk rootProject.minSdk
+        targetSdk rootProject.targetSdk
+        versionCode project.versionCode
+        versionName project.versionName
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+//            debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        mobile {
+            java.srcDirs('src/mobile/java')
+        }
+    }
+
+    flavorDimensions.add("type")
+    productFlavors {
+        mobile {
+            dimension 'type'
+        }
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    namespace 'com.lusion.animationbug'
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging false
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.activity:activity-compose:1.8.2"
+    implementation "androidx.compose.animation:animation-graphics:1.5.4" // any 1.6.0 breaks as well
+    implementation "androidx.compose.foundation:foundation:1.5.4"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.5.4"
+    implementation 'com.google.accompanist:accompanist-drawablepainter:0.33.1-alpha'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.compose.material3:material3:1.1.2'
+    implementation 'com.google.android.gms:play-services-tasks:18.1.0'//33.2 breaks
+
+    apply plugin: 'com.google.gms.google-services'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.5.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+}
